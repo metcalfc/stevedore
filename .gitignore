@@ -1,0 +1,4 @@
+.gems
+.vagrant
+.rbenv-gemsets
+.ruby-version

@@ -1,0 +1,70 @@
+boxes:
+  centos: metcalfc/centos70-docker
+  ubuntu: metcalfc/trusty-docker
+
+roles:
+  swarm:
+    -
+      type: shell
+      script: 'scripts/install-swarm.sh'
+      args:
+        SWARM_GIT_REF: "HEAD"
+        SWARM_GIT_REPO: 'https://github.com/docker/swarm.git'
+        SWARM_BINARY: ''
+
+  docker:
+    -
+      type: shell
+      script: 'scripts/install-docker.sh'
+      args:
+        DOCKER_GIT_REF: ''
+        DOCKER_GIT_REPO: ''
+        DOCKER_BINARY: ''
+
+vm_defaults: &defaults
+  box: 'ubuntu'
+  domain: 'docker.vm'
+  memory: 1024
+  cpus: 2
+  ip_range: '192.168.56.32/28'
+  roles: [docker, swarm]
+
+vms:
+  -
+    <<: *defaults
+    name: swarm01
+    labels:
+        storage: 'ssd'
+        location: 'rack1'
+  -
+    <<: *defaults
+    name: swarm02
+    labels:
+        storage: 'magnetic'
+        location: 'rack1'
+  -
+    <<: *defaults
+    name: swarm03
+    box: 'centos'
+    labels:
+        storage: 'magnetic'
+        location: 'rack1'
+  -
+    <<: *defaults
+    name: swarm04
+    labels:
+        storage: 'ssd'
+        location: 'rack2'
+  -
+    <<: *defaults
+    name: swarm05
+    labels:
+        storage: 'magnetic'
+        location: 'rack2'
+  -
+    <<: *defaults
+    name: swarm06
+    box: 'centos'
+    labels:
+        storage: 'magnetic'
+        location: 'rack2'
