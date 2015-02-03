@@ -2,3 +2,5 @@
 .vagrant
 .rbenv-gemsets
 .ruby-version
+.dockercfg
+bin

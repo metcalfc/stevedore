@@ -19,7 +19,28 @@ roles:
       args:
         DOCKER_GIT_REF: ''
         DOCKER_GIT_REPO: ''
-        DOCKER_BINARY: ''
+        DOCKER_BINARY: 'https://master.dockerproject.com/linux/amd64/docker'
+
+  machine:
+    -
+      type: shell
+      script: 'scripts/install-machine.sh'
+      args:
+        MACHINE_GIT_REF: 'HEAD'
+        MACHINE_GIT_REPO: 'https://github.com/docker/machine.git'
+        MACHINE_BINARY: ''
+
+  compose:
+    -
+      type: shell
+      script: 'scripts/install-compose.sh'
+      args:
+        COMPOSE_BINARY: 'https://github.com/docker/fig/releases/download/1.1.0-rc2/docker-compose-Darwin-x86_64'
+
+  dhe:
+    -
+      type: shell
+      script: 'scripts/install-dhe.sh'
 
 vm_defaults: &defaults
   box: 'ubuntu'
@@ -33,6 +54,8 @@ vms:
   -
     <<: *defaults
     name: swarm01
+    memory: 2048
+    roles: [docker, swarm, dhe, machine, compose]
     labels:
         storage: 'ssd'
         location: 'rack1'

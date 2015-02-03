@@ -35,19 +35,39 @@ echo "SWARM_GIT_REPO = ${SWARM_GIT_REPO}"
 echo "SWARM_BINARY   = ${SWARM_BINARY}"
 echo "BUILD_HOST     = ${BUILD_HOST}"
 
-pkill -9 swarm  || true
+installSwarm () {
+  pkill -9 swarm  || true
 
-if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
+  echo "Checking for a binary release"
+  if [[ ! -z "$SWARM_BINARY" ]]; then
+    if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
+      $curl "$SWARM_BINARY" > /vagrant/.vagrant/swarm
+      chmod +x /vagrant/.vagrant/swarm
+    fi
 
-  if cd "$SWARM_DIR"; then git fetch; else git clone "$SWARM_GIT_REPO" "$SWARM_DIR"; fi
+  else
 
-  pushd "$SWARM_DIR"
-  git log -1
-  docker build -t swarm .
-  docker run  --rm -v /vagrant:/vagrant --entrypoint='/bin/bash' swarm -c '/bin/cp /go/bin/swarm /vagrant/.vagrant/'
-  popd
+    if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
 
+      if cd "$SWARM_DIR"; then
+        git fetch
+      else
+        git clone "$SWARM_GIT_REPO" "$SWARM_DIR"
+      fi
+
+      pushd "$SWARM_DIR"
+      git log -1
+      docker build -t swarm .
+      docker run  --rm -v /vagrant:/vagrant --entrypoint='/bin/bash' swarm -c '/bin/cp /go/bin/swarm /vagrant/.vagrant/'
+      popd
+    fi
+  fi
+
+  echo "Installing swarm"
+  cp /vagrant/.vagrant/swarm /usr/local/bin
+
+}
+
+if [[ ! -e /vagrant/.vagrant/swarm ]]; then
+  installSwarm
 fi
-
-echo "Installing swarm"
-cp /vagrant/.vagrant/swarm /usr/local/bin
