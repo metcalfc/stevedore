@@ -55,12 +55,12 @@ installCompose () {
   echo "Checking for a binary release"
   if [[ ! -z "$COMPOSE_BINARY" ]]; then
     if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
-      $curl "$COMPOSE_BINARY" > /vagrant/bin/docker-compose
-      chmod +x /vagrant/bin/docker-compose
+      if [[ ! -e /vagrant/bin/docker-compose ]]; then
+        $curl "$COMPOSE_BINARY" > /vagrant/bin/docker-compose
+        chmod +x /vagrant/bin/docker-compose
+      fi
     fi
   fi
 }
 
-if [[ ! -e /vagrant/bin/docker-compose ]]; then
-  installCompose
-fi
+installCompose

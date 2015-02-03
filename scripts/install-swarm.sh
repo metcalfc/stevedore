@@ -41,8 +41,10 @@ installSwarm () {
   echo "Checking for a binary release"
   if [[ ! -z "$SWARM_BINARY" ]]; then
     if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
-      $curl "$SWARM_BINARY" > /vagrant/.vagrant/swarm
-      chmod +x /vagrant/.vagrant/swarm
+      if [[ ! -e /vagrant/.vagrant/swarm ]]; then
+        $curl "$SWARM_BINARY" > /vagrant/.vagrant/swarm
+        chmod +x /vagrant/.vagrant/swarm
+      fi
     fi
 
   else
@@ -68,6 +70,4 @@ installSwarm () {
 
 }
 
-if [[ ! -e /vagrant/.vagrant/swarm ]]; then
-  installSwarm
-fi
+installSwarm

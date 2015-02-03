@@ -41,8 +41,10 @@ installMachine () {
   echo "Checking for a binary release"
   if [[ ! -z "$MACHINE_BINARY" ]]; then
     if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
-      $curl "$MACHINE_BINARY" > /vagrant/bin/machine
-      chmod +x /vagrant/bin/machine
+      if [[ ! -e /vagrant/bin/docker-machine ]]; then
+        $curl "$MACHINE_BINARY" > /vagrant/bin/machine
+        chmod +x /vagrant/bin/machine
+      fi
     fi
 
   else
@@ -68,6 +70,4 @@ installMachine () {
   fi
 }
 
-if [[ ! -e /vagrant/bin/docker-machine ]]; then
-  installMachine
-fi
+installMachine

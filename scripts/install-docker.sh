@@ -97,8 +97,10 @@ installDocker() {
   echo "Checking for a binary release"
   if [[ ! -z "$DOCKER_BINARY" ]]; then
     if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
-      $curl "$DOCKER_BINARY" > /vagrant/.vagrant/docker
-      chmod +x /vagrant/.vagrant/docker
+      if [[ ! -e /vagrant/.vagrant/docker ]]; then
+        $curl "$DOCKER_BINARY" > /vagrant/.vagrant/docker
+        chmod +x /vagrant/.vagrant/docker
+      fi
     fi
 
     service docker stop
@@ -150,6 +152,4 @@ fi
 
 updateDockerConfig
 
-if [[ ! -e /vagrant/.vagrant/docker ]]; then
-  installDocker
-fi
+installDocker
