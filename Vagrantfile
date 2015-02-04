@@ -63,7 +63,8 @@ Vagrant.configure("2") do |config|
           'modifyvm', :id,
           '--name', vm['name'],
           '--memory', vm['memory'].to_s,
-          '--cpus', vm['cpus'].to_s
+          '--cpus', vm['cpus'].to_s,
+          '--natdnshostresolver1', 'on'
         ]
       end
 
