@@ -15,7 +15,9 @@ SWARM_MANAGER="${HOSTS[0]%:2375}"
 
 check_landrush
 
-ssh "${SWARM_MANAGER%.docker.vm}" sudo /vagrant/scripts/swarm-manager.sh "${SWARM_HOSTS}"
+vagrant ssh swarm01 \
+  -c "sudo /vagrant/scripts/swarm-manager.sh ${SWARM_HOSTS}" \
+  > /dev/null 2>&1
 
 echo "unset DOCKER_CERT_PATH"
 echo "unset DOCKER_TLS_VERIFY"

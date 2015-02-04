@@ -13,3 +13,5 @@ fi
 nohup swarm --debug manage $SWARM_HOSTS  \
   -H tcp://0.0.0.0:12345 > /var/log/swarm-manager.log 2>&1 & \
   echo $! > /var/run/swarm-manager.pid
+
+sleep 1
