@@ -1,9 +1,7 @@
 .PHONEY: all tools start stop build enterprise
 
-all: 
+all:  .dockercfg
 	@vagrant up
-
-tools: .dockercfg ./bin/docker-compose ./bin/docker-machine .vagrant/docker .vagrant/swarm
 
 ./bin:
 	@mkdir -p ./bin
