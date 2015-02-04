@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SWARM_HOSTS=${1:?"Must specify one or more swarm hosts"}
-IP=${2:?"Must specify a ip to bind to"}
 
 PID_FILE=/var/run/swarm-manager.pid
 

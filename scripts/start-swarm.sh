@@ -1,26 +1,22 @@
 #!/bin/bash
 
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 check_landrush () {
   if [ $(vagrant landrush status | grep running -c) -eq 0 ]; then
     vagrant landrush restart > /dev/null 2>&1
   fi
 }
 
-get_ip () {
-  dig +short $1 -p 10053 @localhost
-}
+SWARM_HOSTS="$("$DIR/get-swarm-hosts.rb")"
 
-SWARM_HOSTS=''
-for HOST in $(vagrant status | grep running | awk {'print $1'}); do
-  SWARM_HOSTS="$SWARM_HOSTS,$(get_ip $HOST):2375"
-done
-
-IP=$(dig +short swarm01.docker.vm -p 10053 @localhost)
+IFS=',' read -ra HOSTS <<< "${SWARM_HOSTS}"
+SWARM_MANAGER="${HOSTS[0]%:2375}"
 
 check_landrush
 
-ssh swarm01 sudo /vagrant/scripts/swarm-manager.sh ${SWARM_HOSTS#,} $IP
+ssh "${SWARM_MANAGER%.docker.vm}" sudo /vagrant/scripts/swarm-manager.sh "${SWARM_HOSTS}"
 
 echo "unset DOCKER_CERT_PATH"
 echo "unset DOCKER_TLS_VERIFY"
-echo "export DOCKER_HOST=$IP:12345"
+echo "export DOCKER_HOST=${SWARM_MANAGER}:12345"

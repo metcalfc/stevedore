@@ -9,7 +9,7 @@ SPEC=YAML::load(File.open(SPEC_FILE))
 
 $ip_range = IPAddr.new(SPEC['vm_defaults']['ip_range']).to_range.to_enum
 $domain = SPEC['vm_defaults']['domain']
-$build_host = ''
+$build_host = {}
 
 def get_ip
   ip = $ip_range.next
@@ -39,8 +39,6 @@ Vagrant.configure("2") do |config|
   SPEC['vms'].each do |vm|
 
     labels=''
-
-    $build_host = vm['name'] if $build_host == ''
 
     if vm['labels']
       labels = vm['labels'].map{|k,v| "#{k}=#{v}"}.join(' ')
@@ -72,7 +70,9 @@ Vagrant.configure("2") do |config|
       vm['roles'].each do |role|
         SPEC['roles'][role].each do |provisioner|
 
-          args = "BUILD_HOST=" + $build_host
+          $build_host[role] = vm['name'] unless $build_host.has_key?(role)
+
+          args = "BUILD_HOST=" + $build_host[role]
 
           if provisioner['args']
             args << ' ' + provisioner['args'].map{|k,v| "#{k}=#{v}"}.join(' ')

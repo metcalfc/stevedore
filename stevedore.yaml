@@ -19,7 +19,7 @@ roles:
       args:
         DOCKER_GIT_REF: ''
         DOCKER_GIT_REPO: ''
-        DOCKER_BINARY: 'https://master.dockerproject.com/linux/amd64/docker'
+        DOCKER_BINARY: 'https://test.docker.com/builds/Linux/x86_64/docker-1.5.0-rc3'
 
   machine:
     -
@@ -53,9 +53,12 @@ vm_defaults: &defaults
 vms:
   -
     <<: *defaults
-    name: swarm01
+    name: enterprise
     memory: 2048
-    roles: [docker, swarm, dhe, machine, compose]
+    roles: [docker, dhe]
+  -
+    <<: *defaults
+    name: swarm01
     labels:
         storage: 'ssd'
         location: 'rack1'
