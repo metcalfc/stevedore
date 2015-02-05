@@ -129,7 +129,7 @@ updateDockerConfig () {
   LINE="${DOCKER_OPTS_VAR}='${DOCKER_OPTS} -H unix:///var/run/docker.sock -H 0.0.0.0:2375 ${LABELS}'"
 
   if ! grep -qF "$LINE" $DOCKER_CONFIG ; then
-    sed -i -- '/^DOCKER_OPTS=/d' $DOCKER_CONFIG
+    sed -i -- "/^${DOCKER_OPTS_VAR}=/d" $DOCKER_CONFIG
     echo "$LINE" >> $DOCKER_CONFIG
 
     #kill any existing Docker ID
