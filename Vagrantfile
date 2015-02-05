@@ -52,6 +52,9 @@ Vagrant.configure("2") do |config|
 
       node_config.vm.host_name = vm['name'] + '.' + $domain
       node_config.vm.network "private_network", ip: ip
+      node_config.vm.provision :hosts do |provisioner|
+        provisioner.add_localhost_hostnames = false
+      end
 
       # This is a work around because landrush IP auto detection picks the
       # last defined interface. When docker is already installed in the base

@@ -10,6 +10,7 @@ Right now we assume Mac OS X. We'll make this work on Windows eventually.
 * Install Vagrant (1.7.x is known good)
 * Install Virtualbox or VMware Fusion (with Vagrant plugin)
 * Install Landrush (>= 0.18) `vagrant plugin install landrush`
+* Install Hosts (>= 2.3.0) `vagrant plugin install vagrant-hosts`
 
 ## SSH setup
 

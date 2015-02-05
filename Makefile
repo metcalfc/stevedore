@@ -2,6 +2,7 @@
 
 all:  .dockercfg
 	@vagrant up
+	@vagrant provision --provision-with hosts
 
 ./bin:
 	@mkdir -p ./bin
