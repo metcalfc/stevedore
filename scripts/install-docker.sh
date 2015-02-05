@@ -139,6 +139,18 @@ updateDockerConfig () {
   fi
 }
 
+
+installDig() {
+  case "$lsb_dist" in
+    centos|redhat)
+    yum install -y bind-utils
+    ;;
+    ubuntu|debian)
+    apt-get install -y dnsutils
+    ;;
+  esac
+}
+
 echo "DOCKER_GIT_REF  = ${DOCKER_GIT_REF}"
 echo "DOCKER_GIT_REPO = ${DOCKER_GIT_REPO}"
 echo "DOCKER_BINARY   = ${DOCKER_BINARY}"
@@ -149,6 +161,9 @@ if [[ ${#ENGINE_LABELS[@]} -ne 0 ]]; then
   printf -- "--label %s " "${ENGINE_LABELS[@]}"
   printf "%s\n" ""
 fi
+
+
+command_exists dig || installDig
 
 updateDockerConfig
 
