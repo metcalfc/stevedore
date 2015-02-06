@@ -50,6 +50,12 @@ Vagrant.configure("2") do |config|
 
       node_config.vm.box = SPEC['boxes'][vm['box']]
 
+      if vm['box'] == 'centos'
+        node_config.vm.provision "shell",
+          path: "scripts/fix-hostname.sh",
+          args: [ vm['name'] ]
+      end
+
       node_config.vm.host_name = vm['name'] + '.' + $domain
       node_config.vm.network "private_network", ip: ip
       node_config.vm.provision :hosts do |provisioner|
