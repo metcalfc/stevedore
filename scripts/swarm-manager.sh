@@ -10,7 +10,9 @@ if [[ -f /proc/$(cat $PID_FILE)/status ]]; then
   killall swarm
 fi
 
-nohup swarm --debug manage $SWARM_HOSTS  \
+SSL_OPTS="--tlsverify --tlscacert=/vagrant/etc/ssl/certs/root-ca.crt --tlscert=/vagrant/etc/ssl/certs/$(hostname -f).crt --tlskey=/vagrant/etc/ssl/private/$(hostname -f).key"
+
+nohup swarm --debug manage $SWARM_HOSTS ${SSL_OPTS} \
   -H tcp://0.0.0.0:12345 > /var/log/swarm-manager.log 2>&1 & \
   echo $! > /var/run/swarm-manager.pid
 

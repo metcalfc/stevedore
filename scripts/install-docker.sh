@@ -126,7 +126,9 @@ updateDockerConfig () {
     LABELS=$(printf -- "--label %s " "${ENGINE_LABELS[@]}")
   fi
 
-  LINE="${DOCKER_OPTS_VAR}='${DOCKER_OPTS} -H unix:///var/run/docker.sock -H 0.0.0.0:2375 ${LABELS}'"
+  SSL_OPTS="--tlsverify --tlscacert=/vagrant/etc/ca.pem --tlscert=/vagrant/etc/ssl/certs/$(hostname -f).crt --tlskey=/vagrant/etc/ssl/private/$(hostname -f).key"
+
+  LINE="${DOCKER_OPTS_VAR}='${DOCKER_OPTS} ${SSL_OPTS} -H unix:///var/run/docker.sock -H 0.0.0.0:2376 ${LABELS}'"
 
   if ! grep -qF "$LINE" $DOCKER_CONFIG ; then
     sed -i -- "/^${DOCKER_OPTS_VAR}=/d" $DOCKER_CONFIG
@@ -139,6 +141,25 @@ updateDockerConfig () {
   fi
 }
 
+installCA() {
+
+  CA_DEST=/usr/local/share/ca-certificates
+  CA_UPDATE_TOOL="update-ca-certificates"
+
+  case "$lsb_dist" in
+  centos|redhat)
+    CA_DEST=/etc/pki/ca-trust/source/anchors
+    CA_UPDATE_TOOL="update-ca-trust"
+    ;;
+  esac
+
+  mkdir -p /etc/docker/certs.d/enterprise.docker.vm
+
+  cp /vagrant/etc/ca.pem $CA_DEST/docker-ca.crt
+  cp /vagrant/etc/ca.pem /etc/docker/certs.d/enterprise.docker.vm/ca.pem
+
+  $CA_UPDATE_TOOL
+}
 
 installDig() {
   case "$lsb_dist" in
@@ -155,16 +176,16 @@ echo "DOCKER_GIT_REF  = ${DOCKER_GIT_REF}"
 echo "DOCKER_GIT_REPO = ${DOCKER_GIT_REPO}"
 echo "DOCKER_BINARY   = ${DOCKER_BINARY}"
 
-
 if [[ ${#ENGINE_LABELS[@]} -ne 0 ]]; then
   printf "%s" "ENGINE_LABELS         = "
   printf -- "--label %s " "${ENGINE_LABELS[@]}"
   printf "%s\n" ""
 fi
 
-
 command_exists dig || installDig
 
 updateDockerConfig
+
+installCA
 
 installDocker

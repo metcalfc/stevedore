@@ -14,4 +14,4 @@ SPEC['vms'].each do |vm|
   end
 end
 
-puts swarm_hosts.map{|x| x + '.docker.vm:2375'}.join(',')
+puts swarm_hosts.map{|x| x + '.docker.vm:2376'}.join(',')

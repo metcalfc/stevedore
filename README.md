@@ -12,11 +12,18 @@ Right now we assume Mac OS X. We'll make this work on Windows eventually.
 * Install Landrush (>= 0.18) `vagrant plugin install landrush`
 * Install Hosts (>= 2.3.0) `vagrant plugin install vagrant-hosts`
 
-## SSH setup
+Optionally:
 
-The environment assumes that all hosts are available with passwordless SSH
-by their short name. Unfortunately SSH config doesn't have an include
-directive. So I tend to hack it.
+* Instant Vagrant snapshotting `vagrant plugin install vagrant-multiprovider-snap`
+
+## Optional Host Side SSH setup
+
+Typing `vagrant ssh hostname` in a specific directory is not nearly as clean
+looking as just `ssh hostname`. Vagrant provides `vagrant ssh-config` but
+you can't just append the output. It might change after a destroy. So there
+has to be a better way. To get passwordless SSH by vm short name. Unfortunately
+SSH config doesn't have an include directive. But some shell magic will automate
+the problem away.
 
 Move your original `~/.ssh/config` to `~/.ssh/config.00_default`. Then set
 the following functions in your preferred shell:

@@ -11,7 +11,7 @@ check_landrush () {
 SWARM_HOSTS="$("$DIR/get-swarm-hosts.rb")"
 
 IFS=',' read -ra HOSTS <<< "${SWARM_HOSTS}"
-SWARM_MANAGER="${HOSTS[0]%:2375}"
+SWARM_MANAGER="${HOSTS[0]%:2376}"
 
 check_landrush
 
@@ -19,6 +19,6 @@ vagrant ssh swarm01 \
   -c "sudo /vagrant/scripts/swarm-manager.sh ${SWARM_HOSTS}" \
   > /dev/null 2>&1
 
-echo "unset DOCKER_CERT_PATH"
-echo "unset DOCKER_TLS_VERIFY"
+echo "export DOCKER_TLS_VERIFY=yes"
+echo "export DOCKER_CERT_PATH=$(dirname $DIR)/etc"
 echo "export DOCKER_HOST=${SWARM_MANAGER}:12345"
