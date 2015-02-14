@@ -20,13 +20,14 @@ end
 
 # Grab any ENV
 SPEC['roles'].each do |role, provisioners|
+
   provisioners.each do |provisioner|
     if provisioner['args']
       provisioner['args'].each do |k,v|
         provisioner['args'][k] = eval(v) if v.start_with? 'ENV'
       end
     end
-  end
+  end if provisioners
 end
 
 Vagrant.configure("2") do |config|
@@ -91,7 +92,7 @@ Vagrant.configure("2") do |config|
           node_config.vm.provision provisioner['type'],
             path: provisioner['script'],
             args: args
-        end
+        end if SPEC['roles'][role]
       end
     end
   end

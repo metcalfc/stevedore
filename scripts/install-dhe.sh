@@ -12,6 +12,8 @@ case $i in
 esac
 done
 
+docker info
+
 if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
   mkdir -p /usr/local/etc/dhe
   cp /vagrant/.dockercfg /usr/local/etc/dhe/

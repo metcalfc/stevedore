@@ -3,7 +3,7 @@ boxes:
   ubuntu: metcalfc/trusty-docker
 
 roles:
-  swarm:
+  swarm-manager:
     -
       type: shell
       script: 'scripts/install-swarm.sh'
@@ -12,6 +12,8 @@ roles:
         SWARM_GIT_REPO: 'https://github.com/docker/swarm.git'
         SWARM_BINARY: ''
 
+  swarm:
+
   docker:
     -
       type: shell
@@ -19,7 +21,7 @@ roles:
       args:
         DOCKER_GIT_REF: ''
         DOCKER_GIT_REPO: ''
-        DOCKER_BINARY: 'https://test.docker.com/builds/Linux/x86_64/docker-1.5.0-rc3'
+        DOCKER_BINARY: ''
 
   machine:
     -
@@ -55,7 +57,7 @@ vms:
     <<: *defaults
     name: enterprise
     memory: 2048
-    roles: [docker, dhe]
+    roles: [docker, dhe, swarm-manager]
   -
     <<: *defaults
     name: swarm01
@@ -65,31 +67,19 @@ vms:
   -
     <<: *defaults
     name: swarm02
-    labels:
-        storage: 'magnetic'
-        location: 'rack1'
-  -
-    <<: *defaults
-    name: swarm03
     box: 'centos'
     labels:
         storage: 'magnetic'
         location: 'rack1'
   -
     <<: *defaults
-    name: swarm04
+    name: swarm03
     labels:
         storage: 'ssd'
         location: 'rack2'
   -
     <<: *defaults
-    name: swarm05
-    labels:
-        storage: 'magnetic'
-        location: 'rack2'
-  -
-    <<: *defaults
-    name: swarm06
+    name: swarm04
     box: 'centos'
     labels:
         storage: 'magnetic'

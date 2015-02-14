@@ -8,14 +8,13 @@ check_landrush () {
   fi
 }
 
-SWARM_HOSTS="$("$DIR/get-swarm-hosts.rb")"
+SWARM_HOSTS="$($DIR/get-swarm-hosts.rb -h)"
 
-IFS=',' read -ra HOSTS <<< "${SWARM_HOSTS}"
-SWARM_MANAGER="${HOSTS[0]%:2376}"
+SWARM_MANAGER="$($DIR/get-swarm-hosts.rb -m)"
 
 check_landrush
 
-vagrant ssh swarm01 \
+vagrant ssh $SWARM_MANAGER \
   -c "sudo /vagrant/scripts/swarm-manager.sh ${SWARM_HOSTS}" \
   > /dev/null 2>&1
 
