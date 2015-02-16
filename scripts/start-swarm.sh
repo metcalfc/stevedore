@@ -8,16 +8,15 @@ check_landrush () {
   fi
 }
 
-SWARM_HOSTS="$($DIR/get-swarm-hosts.rb -h)"
-
-SWARM_MANAGER="$($DIR/get-swarm-hosts.rb -m)"
+SWARM_HOSTS="$(${DIR}/get-swarm-hosts.rb -h)"
+SWARM_MANAGER="$(${DIR}/get-swarm-hosts.rb -m)"
 
 check_landrush
 
-vagrant ssh $SWARM_MANAGER \
+vagrant ssh ${SWARM_MANAGER%%.*} \
   -c "sudo /vagrant/scripts/swarm-manager.sh ${SWARM_HOSTS}" \
   > /dev/null 2>&1
 
 echo "export DOCKER_TLS_VERIFY=yes"
-echo "export DOCKER_CERT_PATH=$(dirname $DIR)/etc"
+echo "export DOCKER_CERT_PATH=$(dirname ${DIR})/etc"
 echo "export DOCKER_HOST=${SWARM_MANAGER}:12345"
