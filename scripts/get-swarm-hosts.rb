@@ -29,7 +29,7 @@ SPEC['vms'].each do |vm|
 end
 
 if $get_manager
-  printf "%s" % swarm_manager if $get_manager
+  printf "%s" % swarm_manager + ':12345' if $get_manager
   if $get_hosts
     printf " "
   else
