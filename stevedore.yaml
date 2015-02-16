@@ -20,7 +20,7 @@ roles:
       args:
         DOCKER_GIT_REF: ''
         DOCKER_GIT_REPO: ''
-        DOCKER_BINARY: 'https://test.docker.com/builds/Linux/x86_64/docker-1.5.0-rc4'
+        DOCKER_BINARY: 'https://get.docker.com/builds/Linux/x86_64/docker-1.5.0'
 
   machine:
     -
