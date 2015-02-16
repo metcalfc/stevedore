@@ -8,8 +8,8 @@ check_landrush () {
   fi
 }
 
-SWARM_HOSTS="$("$DIR/get-swarm-hosts.rb -h")"
-SWARM_MANAGER="$("$DIR/get-swarm-hosts.rb -m")"
+SWARM_HOSTS="$("$DIR/get-swarm-hosts.rb" -h)"
+SWARM_MANAGER="$("$DIR/get-swarm-hosts.rb" -m)"
 
 IFS=',' read -ra HOSTS <<< "${SWARM_HOSTS}"
 
