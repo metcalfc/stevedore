@@ -13,7 +13,7 @@ if [[ ! -f ./etc/ssl/${NAME}.cnf ]]; then
     --entrypoint /usr/local/bin/certified \
     -v ~/.gitconfig:/root/.gitconfig \
     metcalfc/certified:latest \
-    CN="${NAME}" +"*.${NAME}" +"${IP}"
+    CN="${NAME}" +"*.${NAME}" +"${NAME%%.*}" +"${IP}"
 fi
 
 # We need the intermediate CA in the cert
