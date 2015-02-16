@@ -24,14 +24,17 @@ swarm_manager=''
 SPEC['vms'].each do |vm|
   vm['roles'].each do |role|
     swarm_hosts << vm['name'] + "." + vm['domain'] if role == 'swarm'
-    swarm_manager = vm['name'] if role == 'swarm-manager'
+    swarm_manager = vm['name'] + "." + vm['domain'] if role == 'swarm-manager'
   end
 end
 
-printf "%s" % swarm_manager if $get_manager
-if $get_manager && ! $get_hosts
-  printf "\n"
-elsif $get_manager && $get_hosts
-  printf " "
+if $get_manager
+  printf "%s" % swarm_manager if $get_manager
+  if $get_hosts
+    printf " "
+  else
+    printf "\n"
+  end
 end
+
 printf "%s\n" % swarm_hosts.map{|x| x + ':2376'}.join(',') if $get_hosts
