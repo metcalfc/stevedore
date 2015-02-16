@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-SWARM_HOSTS="$("${DIR}/get-swarm-manager.rb")"
+SWARM_HOSTS="$("${DIR}/get-swarm-hosts.rb -m")"
 
 IFS=","
 for HOST in $SWARM_HOSTS; do
