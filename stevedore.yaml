@@ -7,10 +7,6 @@ roles:
     -
       type: shell
       script: 'scripts/install-swarm.sh'
-      args:
-        SWARM_GIT_REF: "HEAD"
-        SWARM_GIT_REPO: 'https://github.com/docker/swarm.git'
-        SWARM_BINARY: ''
 
   swarm:
 
