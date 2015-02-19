@@ -41,23 +41,7 @@ build: .dockercfg
 	@vagrant provision
 
 etc/:
-	mkdir -p ./etc
-	docker run -it --rm -v $(PWD)/etc:/certified/etc \
-	-v ~/.gitconfig:/root/.gitconfig \
-	--entrypoint=/usr/local/bin/certified-ca \
-	metcalfc/certified:latest \
-	--root-password='docker' \
-	C="US" ST="CA" L="San Francisco" \
-	O="Docker" CN="Docker CA"
-	docker run -it --rm -v $(PWD)/etc:/certified/etc \
-	-v ~/.gitconfig:/root/.gitconfig \
-	--entrypoint=/usr/local/bin/certified \
-	metcalfc/certified:latest \
-	CN="client"
-	cat ./etc/ssl/certs/client.crt ./etc/ssl/certs/ca.crt >> ./etc/cert.pem
-	cp ./etc/ssl/private/client.key ./etc/key.pem
-	cat ./etc/ssl/certs/root-ca.crt ./etc/ssl/certs/ca.crt >> ./etc/ca.pem
-	./scripts/gen-ssl-keys.rb
+	./scripts/etc-setup.sh
 
 # www is opt in i.e., you need to explicitly run make www
 www: etc
