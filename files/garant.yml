@@ -1,0 +1,12 @@
+version: "0.1"
+logging:
+  level: debug
+  formatter: ""
+  fields: {}
+signingkey: /usr/local/etc/dhe/generatedConfigs/signing_key.json
+issuer: enterprise.docker.vm
+auth: naive
+reporting: {}
+http:
+  addr: :80
+  prefix: auth

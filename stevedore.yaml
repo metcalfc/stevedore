@@ -1,6 +1,6 @@
 boxes:
-  centos: metcalfc/centos70-docker
-  ubuntu: metcalfc/trusty-docker
+  centos: puppetlabs/centos-7.0-64-puppet
+  ubuntu: puppetlabs/ubuntu-14.04-64-puppet
 
 roles:
   swarm-manager:
@@ -15,9 +15,7 @@ roles:
       type: shell
       script: 'scripts/install-docker.sh'
       args:
-        DOCKER_GIT_REF: ''
-        DOCKER_GIT_REPO: ''
-        DOCKER_BINARY: ''
+        PACKAGECLOUD_TOKEN: "ENV['PACKAGECLOUD_TOKEN']"
 
   machine:
     -
@@ -78,5 +76,5 @@ vms:
     name: swarm04
     box: 'centos'
     labels:
-        storage: 'magnetic'
-        location: 'rack2'
+       storage: 'magnetic'
+       location: 'rack2'

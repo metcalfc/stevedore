@@ -3,7 +3,13 @@
 
 require 'yaml'
 
+def die(msg)
+  puts msg
+  exit 1
+end
+
 SPEC_FILE=ENV['STEVEDORE_FILE'] || File.expand_path(File.dirname(__FILE__)) + '/stevedore.yaml'
+PACKAGECLOUD_TOKEN=ENV['PACKAGECLOUD_TOKEN'] || die('PACKAGECLOUD_TOKEN must be set')
 
 SPEC=YAML::load(File.open(SPEC_FILE))
 
