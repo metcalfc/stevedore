@@ -6,12 +6,17 @@ export DOCKER_DIR=$GOPATH/src/github.com/docker/docker
 DOCKER_GIT_REF=''
 DOCKER_GIT_REPO=''
 DOCKER_BINARY=''
+PACKAGECLOUD_TOKEN=''
 DOCKER_OPTS=''
 ENGINE_LABELS=()
 
 for i in "$@"
 do
 case $i in
+    PACKAGECLOUD_TOKEN=*)
+    PACKAGECLOUD_TOKEN="${i#*=}"
+    shift
+    ;;
     DOCKER_GIT_REF=*)
     DOCKER_GIT_REF="${i#*=}"
     shift
@@ -70,6 +75,31 @@ if [ -z "$lsb_dist" ] && [ -r /etc/os-release ]; then
 fi
 
 installDocker() {
+echo $lsb_dist
+  echo "Checking for a CS Install"
+  if [[ ! -z "$PACKAGECLOUD_TOKEN" ]]; then
+    export PACKAGECLOUD_TOKEN
+    case "$lsb_dist" in
+    centos|redhat)
+      echo "Installing rpm"
+      /vagrant/scripts/docker-cs-engine-rpm.sh
+      yum install -y docker-engine-cs
+      systemctl stop firewalld.service
+      systemctl disable firewalld.service
+      systemctl start docker.service
+      systemctl enable docker.service
+      ;;
+    Ubuntu|debian)
+      echo "Installing deb"
+      /vagrant/scripts/docker-cs-engine-deb.sh
+      apt-get install -y docker-engine-cs
+      ;;
+    esac
+
+    usermod -aG docker vagrant
+
+  fi
+
   if [[ ! -z "$DOCKER_GIT_REF" ]]; then
 
     if [ "$HOSTNAME" = "$BUILD_HOST" ]; then
@@ -101,7 +131,8 @@ installDocker() {
         $curl "$DOCKER_BINARY" > /vagrant/.vagrant/docker
         chmod +x /vagrant/.vagrant/docker
       fi
-    fi
+  fi
+
 
     service docker stop
     cp /vagrant/.vagrant/docker /usr/bin/docker
@@ -135,7 +166,7 @@ updateDockerConfig () {
     echo "$LINE" >> $DOCKER_CONFIG
 
     #kill any existing Docker ID
-    rm -f /.docker/key.json
+    rm -f /etc/docker/key.json
 
     service docker restart
   fi
@@ -172,9 +203,10 @@ installDig() {
   esac
 }
 
-echo "DOCKER_GIT_REF  = ${DOCKER_GIT_REF}"
-echo "DOCKER_GIT_REPO = ${DOCKER_GIT_REPO}"
-echo "DOCKER_BINARY   = ${DOCKER_BINARY}"
+echo "DOCKER_GIT_REF     = ${DOCKER_GIT_REF}"
+echo "DOCKER_GIT_REPO    = ${DOCKER_GIT_REPO}"
+echo "DOCKER_BINARY      = ${DOCKER_BINARY}"
+echo "PACKAGECLOUD_TOKEN = ${PACKAGECLOUD_TOKEN}"
 
 if [[ ${#ENGINE_LABELS[@]} -ne 0 ]]; then
   printf "%s" "ENGINE_LABELS         = "
@@ -184,8 +216,6 @@ fi
 
 command_exists dig || installDig
 
-updateDockerConfig
-
-installCA
-
 installDocker
+installCA
+updateDockerConfig

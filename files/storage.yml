@@ -1,0 +1,25 @@
+version: "0.1"
+log:
+  level: debug
+storage:
+  filesystem:
+    rootdirectory: /local
+auth:
+  token:
+    issuer: enterprise.docker.vm
+    realm: https://enterprise.docker.vm/auth/token
+    rootcertbundle: /auth/certs/token_roots.pem
+    service: enterprise.docker.vm
+http:
+  addr: :5000
+notifications:
+  endpoints:
+  - name: audit-logs
+    disabled: false
+    url: http://admin_server/events/
+    headers:
+      X-Registry-Events:
+      - "true"
+    timeout: "0"
+    threshold: 0
+    backoff: "0"
