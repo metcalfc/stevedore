@@ -3,9 +3,9 @@ logging:
   level: debug
   formatter: ""
   fields: {}
-signingkey: /usr/local/etc/dhe/generatedConfigs/signing_key.json
+signingkey: /usr/local/etc/dtr/generatedConfigs/signing_key.json
 issuer: enterprise.docker.vm
-auth: naive
+auth: dtr
 reporting: {}
 http:
   addr: :80

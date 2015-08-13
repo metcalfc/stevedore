@@ -16,13 +16,19 @@ docker info
 
 if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
 
-  sudo bash -c "$(sudo docker run dockerhubenterprise/manager install)"
+  sudo bash -c "$(sudo docker run docker/trusted-registry install)"
 
-  rm /usr/local/etc/dhe/ssl/server.pem
+  rm /usr/local/etc/dtr/ssl/server.pem
   cat /vagrant/etc/ssl/private/$(hostname -f).key \
       /vagrant/etc/ssl/certs/$(hostname -f).crt >> \
-      /usr/local/etc/dhe/ssl/server.pem
+      /usr/local/etc/dtr/ssl/server.pem
   mkdir -p /etc/docker/certs.d/$(hostname -f)
   cp /vagrant/etc/ca.pem /etc/docker/certs.d/$(hostname -f)/ca.pem
+
+  cp /vagrant/files/* /usr/local/etc/dtr/
+
+  cp /vagrant/etc/license.json /usr/local/etc/dtr/license.json
+
+  sudo bash -c "$(sudo docker run docker/trusted-registry restart)"
 
 fi
