@@ -35,6 +35,8 @@ docker run -it --rm -v $(pwd)/etc:/certified/etc \
 --entrypoint=/usr/local/bin/certified-ca \
 metcalfc/certified:latest \
 --root-password='docker' \
+--root-crl-url=https://ca.enterprise.docker.vm:666/rootca.crl  \
+--crl-url=https://ca.enterprise.docker.vm:666/ca.crl \
 C="US" ST="CA" L="San Francisco" \
 O="Docker" CN="Docker CA"
 
