@@ -33,10 +33,10 @@ roles:
       args:
         COMPOSE_BINARY: 'https://github.com/docker/fig/releases/download/1.1.0-rc2/docker-compose-Darwin-x86_64'
 
-  dhe:
+  dtr:
     -
       type: shell
-      script: 'scripts/install-dhe.sh'
+      script: 'scripts/install-dtr.sh'
 
 vm_defaults: &defaults
   box: 'ubuntu'
@@ -51,7 +51,7 @@ vms:
     <<: *defaults
     name: enterprise
     memory: 2048
-    roles: [docker, dhe, swarm-manager]
+    roles: [docker, dtr, swarm-manager]
   -
     <<: *defaults
     name: swarm01
