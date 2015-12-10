@@ -4,7 +4,7 @@ logging:
   formatter: ""
   fields: {}
 signingkey: /usr/local/etc/dtr/generatedConfigs/signing_key.json
-issuer: enterprise.docker.vm
+issuer: dtr.docker.vm
 auth: dtr
 reporting: {}
 http:

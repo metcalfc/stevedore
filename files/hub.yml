@@ -1,6 +1,6 @@
 load_balancer_http_port: 80
 load_balancer_https_port: 443
-domain_name: enterprise.docker.vm
+domain_name: dtr.docker.vm
 extra_env:
   HTTP_PROXY: ""
   HTTPS_PROXY: ""

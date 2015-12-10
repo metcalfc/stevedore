@@ -5,3 +5,6 @@
 .dockercfg
 bin
 etc
+ducp
+dtr
+src

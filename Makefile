@@ -2,7 +2,6 @@
 
 all:  .dockercfg etc
 	@vagrant up
-	@vagrant provision --provision-with hosts
 
 snap:
 	@vagrant snap take
@@ -10,32 +9,11 @@ snap:
 rollback:
 	@vagrant snap rollback
 
-./bin:
-	@mkdir -p ./bin
-
-./bin/docker-compose:
-	@vagrant provision
-
-./bin/docker-machine:
-	@vagrant provision
-
-.vagrant/docker:
-	@vagrant provision
-
-.vagrant/swarm:
-	@vagrant provision
-
 $(HOME)/.dockercfg:
 	docker login
 
 .dockercfg:
 	@cp $(HOME)/.dockercfg $(PWD)
-
-start:
-	@./scripts/start-swarm.sh
-
-stop:
-	@./scripts/stop-swarm.sh
 
 build: .dockercfg
 	@vagrant provision
@@ -52,10 +30,6 @@ wwwclean:
 	sudo security delete-certificate -c "Docker CA" "/Library/Keychains/System.keychain" -t || true
 
 clean:
-	@rm -f ./.vagrant/docker
-	@rm -f ./.vagrant/swarm
-	@rm -f ./bin/docker-machine
-	@rm -f ./bin/docker-compose
 
 realclean: clean
 	@vagrant destroy -f

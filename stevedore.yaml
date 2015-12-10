@@ -1,79 +1,77 @@
 boxes:
-  centos: puppetlabs/centos-7.0-64-puppet
-  ubuntu: puppetlabs/ubuntu-14.04-64-puppet
+  centos: metcalfc/centos71-4.x
+  ubuntu: metcalfc/trusty-4.x
 
 roles:
-  swarm-manager:
-    -
-      type: shell
-      script: 'scripts/install-swarm.sh'
-
-  swarm:
-
   docker:
     -
       type: shell
       script: 'scripts/install-docker.sh'
-      args:
-        PACKAGECLOUD_TOKEN: "ENV['PACKAGECLOUD_TOKEN']"
-
-  machine:
-    -
-      type: shell
-      script: 'scripts/install-machine.sh'
-      args:
-        MACHINE_GIT_REF: 'HEAD'
-        MACHINE_GIT_REPO: 'https://github.com/docker/machine.git'
-        MACHINE_BINARY: ''
-
-  compose:
-    -
-      type: shell
-      script: 'scripts/install-compose.sh'
-      args:
-        COMPOSE_BINARY: 'https://github.com/docker/fig/releases/download/1.1.0-rc2/docker-compose-Darwin-x86_64'
 
   dtr:
     -
       type: shell
       script: 'scripts/install-dtr.sh'
 
+  ducp:
+    -
+      type: shell
+      script: 'scripts/install-ducp.sh'
+      args:
+        DUCP_USERNAME: 'admin'
+        DUCP_PASSWORD: 'orca'
+
+  join-ducp:
+    -
+      type: shell
+      script: 'scripts/join-ducp.sh'
+      args:
+        DUCP_HOSTNAME: 'ducp.docker.vm'
+        DUCP_USERNAME: 'admin'
+        DUCP_PASSWORD: 'orca'
+
 vm_defaults: &defaults
   box: 'ubuntu'
   domain: 'docker.vm'
-  memory: 1024
+  memory: 1792
   cpus: 2
-  ip_range: '192.168.56.32/28'
-  roles: [docker, swarm]
+  vboxnet: 'vboxnet1'
+  roles: [docker, join-ducp]
 
 vms:
   -
     <<: *defaults
-    name: enterprise
-    memory: 2048
-    roles: [docker, dtr, swarm-manager]
+    name: dtr
+    ip: '192.168.99.200'
+    roles: [docker, dtr]
+
   -
     <<: *defaults
-    name: swarm01
+    name: ducp
+    ip: '192.168.99.201'
     labels:
         storage: 'ssd'
         location: 'rack1'
+    roles: [docker, ducp]
   -
     <<: *defaults
-    name: swarm02
+    name: engine01
+    ip: '192.168.99.211'
     box: 'centos'
     labels:
         storage: 'magnetic'
         location: 'rack1'
   -
     <<: *defaults
-    name: swarm03
+    name: engine02
+    ip: '192.168.99.212'
     labels:
         storage: 'ssd'
         location: 'rack2'
   -
     <<: *defaults
-    name: swarm04
+    name: engine03
+    ip: '192.168.99.213'
     box: 'centos'
     labels:
        storage: 'magnetic'

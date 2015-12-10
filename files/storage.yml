@@ -6,10 +6,10 @@ storage:
     rootdirectory: /local
 auth:
   token:
-    issuer: enterprise.docker.vm
-    realm: https://enterprise.docker.vm/auth/token
+    issuer: dtr.docker.vm
+    realm: https://dtr.docker.vm/auth/token
     rootcertbundle: /auth/certs/token_roots.pem
-    service: enterprise.docker.vm
+    service: dtr.docker.vm
 http:
   addr: :5000
 notifications:

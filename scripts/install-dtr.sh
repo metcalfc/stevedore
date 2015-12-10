@@ -1,17 +1,5 @@
 #!/bin/bash
 
-BUILD_HOST=''
-
-for i in "$@"
-do
-case $i in
-    BUILD_HOST=*)
-    BUILD_HOST="${i#*=}"
-    shift
-    ;;
-esac
-done
-
 docker info
 
 if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
