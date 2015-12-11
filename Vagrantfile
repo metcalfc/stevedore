@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
       node_config.vm.box = SPEC['boxes'][vm['box']]
 
       node_config.vm.host_name = vm['name'] + '.' + $domain
-      node_config.vm.network "private_network", type: :dhcp
+      node_config.vm.network "private_network", mac: vm['mac'], type: :dhcp
 
       node_config.vm.provider "virtualbox" do |vb|
         vb.customize [

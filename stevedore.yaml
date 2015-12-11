@@ -43,12 +43,14 @@ vms:
     <<: *defaults
     name: dtr
     ip: '192.168.99.200'
+    mac: '080027087dfe'
     roles: [docker, dtr]
 
   -
     <<: *defaults
     name: ducp
     ip: '192.168.99.201'
+    mac: '080027c69bc2'
     labels:
         storage: 'ssd'
         location: 'rack1'
@@ -57,6 +59,7 @@ vms:
     <<: *defaults
     name: engine01
     ip: '192.168.99.211'
+    mac: '0800278b3557'
     box: 'centos'
     labels:
         storage: 'magnetic'
@@ -65,6 +68,7 @@ vms:
     <<: *defaults
     name: engine02
     ip: '192.168.99.212'
+    mac: '080027e79dc9'
     labels:
         storage: 'ssd'
         location: 'rack2'
@@ -72,6 +76,7 @@ vms:
     <<: *defaults
     name: engine03
     ip: '192.168.99.213'
+    mac: '080027363bd3'
     box: 'centos'
     labels:
        storage: 'magnetic'
