@@ -5,16 +5,19 @@ A common Vagrant environment for developing, testing, or playing with the Docker
 
 ## Virtualization Setup
 
-Right now we assume Mac OS X. We'll make this work on Windows eventually.
+Right now we assume Mac OS X.
 
-* Install Vagrant (1.7.x is known good)
+* Install Vagrant (1.7.4 is known good)
 * Install Virtualbox or VMware Fusion (with Vagrant plugin)
-* Install Landrush (>= 0.18) `vagrant plugin install landrush`
-* Install Hosts (>= 2.3.0) `vagrant plugin install vagrant-hosts`
+* Install dnsmasq `brew install dnsmasq`
+* Configure dnsmasq:
+    - Stop all VMs (Docker Machine or otherwise)
+    - Run `scripts/setup-dnsmasq.sh`
 
 Optionally:
 
 * Instant Vagrant snapshotting `vagrant plugin install vagrant-multiprovider-snap`
+* Add hosts to your laptops’s `/etc/hosts`. Go doesn’t use resolver so you’ll have to use IP addresses to talk to these hosts with Docker otherwise
 
 ## Optional Host Side SSH setup
 
