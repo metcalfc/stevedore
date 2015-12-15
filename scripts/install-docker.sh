@@ -155,6 +155,12 @@ installJq () {
     chmod 0755 /usr/local/bin/jq
 }
 
+installCompose () {
+  $curl "https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m`" \
+    > /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+}
+
 if [[ ${#ENGINE_LABELS[@]} -ne 0 ]]; then
   printf "%s" "ENGINE_LABELS         = "
   printf -- "--label %s " "${ENGINE_LABELS[@]}"
@@ -163,6 +169,7 @@ fi
 
 command_exists dig || installDig
 command_exists jq  || installJq
+command_exists docker-compose  || installCompose
 installDocker
 installCA
 updateDockerConfig
