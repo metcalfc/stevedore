@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
             args << ' ' + provisioner['args'].map{|k,v| "#{k}=#{v}"}.join(' ')
           end
 
-          args << ' ' + labels if role == 'docker'
+          args << ' ' + labels if role.include? 'docker'
 
           node_config.vm.provision provisioner['type'],
             path: provisioner['script'],
