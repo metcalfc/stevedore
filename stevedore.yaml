@@ -8,13 +8,6 @@ roles:
       type: shell
       script: 'scripts/install-docker.sh'
 
-  docker-clustered:
-    -
-      type: shell
-      script: 'scripts/install-docker.sh'
-      args:
-        CLUSTER_CONTROLLER: 'ducp.docker.vm'
-
   dtr:
     -
       type: shell
@@ -43,7 +36,7 @@ vm_defaults: &defaults
   memory: 1792
   cpus: 2
   vboxnet: 'vboxnet1'
-  roles: [docker-clustered, join-ducp]
+  roles: [docker, join-ducp]
 
 vms:
   -
@@ -61,7 +54,7 @@ vms:
     labels:
         storage: 'ssd'
         location: 'rack1'
-    roles: [docker-clustered, ducp]
+    roles: [docker, ducp]
   -
     <<: *defaults
     name: engine01
