@@ -16,7 +16,7 @@ make-ucp-bundle () {
     TMPFILE=$(mktemp -d "/tmp/${DUCP}.XXXXXX") || exit 1
     JSON="{\"username\":\"${USER_NAME}\",\"password\":\"${PASSWD}\"}"
     AUTHTOKEN=$(curl -sk -d "${JSON}" "https://${DUCP}/auth/login" | jq -r .auth_token)
-    curl -k -H "X-Access-Token:admin:$AUTHTOKEN" "https://${DUCP}/api/clientbundle" -o "${TMPFILE}/bundle.zip"
+    curl -k -H "X-Access-Token:admin:$AUTHTOKEN" "https://${DUCP}/api/clientbundle" -X POST -o "${TMPFILE}/bundle.zip"
     unzip  "${TMPFILE}/bundle.zip" -d "${DIR}/ducp"
     rm -rf "${TMPFILE}" || echo "Couldn't delete ${TMPFILE}"
 }
