@@ -1,5 +1,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+export STEVEDORE_ROOT=$DIR
+
 make-dtr-bundle () {
     mkdir -p $DIR/dtr
     cp $DIR/etc/ca.pem $DIR/dtr/ca.pem
