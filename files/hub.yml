@@ -1,7 +1,12 @@
 load_balancer_http_port: 80
 load_balancer_https_port: 443
 domain_name: dtr.docker.vm
+notary_server: https://dtr.docker.vm:4443
+notary_cert: ""
+notary_verify_cert: false
 extra_env:
   HTTP_PROXY: ""
   HTTPS_PROXY: ""
   NO_PROXY: ""
+disable_upgrades: false
+release_channel: ""

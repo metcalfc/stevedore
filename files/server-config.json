@@ -1,0 +1,23 @@
+{
+	"server": {
+		"http_addr": ":4443",
+		"tls_key_file": "/data/key.pem",
+		"tls_cert_file": "/data/cert.pem"
+	},
+	"trust_service": {
+	  "type": "remote",
+	  "hostname": "notarysigner",
+	  "port": "7899",
+	  "tls_ca_file": "/data/ca.pem",
+	  "key_algorithm": "ecdsa",
+	  "tls_client_cert": "/data/key.pem",
+	  "tls_client_key": "/data/cert.pem"
+	},
+	"logging": {
+		"level": "debug"
+	},
+	"storage": {
+		"backend": "mysql",
+		"db_url": "root@tcp(notarymysql:3306)/notary?parseTime=True"
+	}
+}

@@ -2,6 +2,19 @@
 
 docker info
 
+if ! docker volume inspect dtr-certs; then
+    docker volume create --name dtr-certs
+    docker run --name hold -v dtr-certs:/data tianon/true
+    docker cp /vagrant/etc/ca.pem hold:/data/ca.pem
+    docker cp /vagrant/etc/ssl/certs/$(hostname -f).crt hold:/data/cert.pem
+    docker cp /vagrant/etc/ssl/private/$(hostname -f).key hold:/data/key.pem
+    docker cp /vagrant/files/server-config.json hold:/data/server-config.json
+fi
+
+if ! docker volume inspect notary-mysql; then
+    docker volume create --name notary-mysql
+fi
+
 if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
 
   sudo bash -c "$(sudo docker run docker/trusted-registry install)"
@@ -19,4 +32,11 @@ if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
 
   sudo bash -c "$(sudo docker run docker/trusted-registry restart)"
 
+fi
+
+if [[ $(docker ps  | grep 'notary' -c) -ne 3 ]]; then
+    cp /vagrant/files/docker-compose.yml /vagrant/src/notary
+    pushd /vagrant/src/notary
+    docker-compose up -d
+    popd
 fi
