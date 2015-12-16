@@ -9,6 +9,13 @@ make-dtr-bundle () {
     cp $DIR/etc/ssl/certs/dtr.docker.vm.crt $DIR/dtr/cert.pem
 }
 
+make-dev-bundle () {
+    mkdir -p $DIR/dev
+    cp $DIR/etc/ca.pem $DIR/dev/ca.pem
+    cp $DIR/etc/ssl/private/dev.docker.vm.key $DIR/dev/key.pem
+    cp $DIR/etc/ssl/certs/dev.docker.vm.crt $DIR/dev/cert.pem
+}
+
 make-ucp-bundle () {
     DUCP="${1:-ducp.docker.vm}"
     USER_NAME="${1:-admin}"
@@ -26,6 +33,13 @@ use-dtr () {
     export DOCKER_CERT_PATH=$DIR/dtr
     export DOCKER_TLS_VERIFY=1
 }
+
+use-dev () {
+    export DOCKER_HOST=tcp://dev.docker.vm:2376
+    export DOCKER_CERT_PATH=$DIR/dev
+    export DOCKER_TLS_VERIFY=1
+}
+
 use-ucp () {
     export DOCKER_HOST=tcp://ducp.docker.vm:443
     export DOCKER_CERT_PATH=$DIR/ducp

@@ -41,6 +41,14 @@ vm_defaults: &defaults
 vms:
   -
     <<: *defaults
+    name: dev
+    memory: 1024
+    ip: '192.168.99.220'
+    mac: '0800deadbeef'
+    roles: [docker]
+
+  -
+    <<: *defaults
     name: dtr
     ip: '192.168.99.200'
     mac: '080027087dfe'
