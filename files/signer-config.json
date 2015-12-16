@@ -1,0 +1,16 @@
+{
+	"server": {
+		"http_addr": ":4444",
+		"grpc_addr": ":7899",
+		"tls_cert_file": "/data/cert.pem",
+		"tls_key_file": "/data/key.pem",
+		"client_ca_file": "/data/ca.pem"
+	},
+	"logging": {
+		"level": "debug"
+	},
+	"storage": {
+		"backend": "mysql",
+		"db_url": "root@tcp(notarymysql:3306)/notary?parseTime=True"
+	}
+}

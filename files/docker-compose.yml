@@ -4,7 +4,7 @@ notaryserver:
   restart: always
   links:
    - notarymysql
-   - notarysigner
+   - notarysigner:dtr.docker.vm
   ports:
    - "8080"
    - "4443:4443"

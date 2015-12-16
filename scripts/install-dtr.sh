@@ -9,6 +9,7 @@ if ! docker volume inspect dtr-certs; then
     docker cp /vagrant/etc/ssl/certs/$(hostname -f).crt hold:/data/cert.pem
     docker cp /vagrant/etc/ssl/private/$(hostname -f).key hold:/data/key.pem
     docker cp /vagrant/files/server-config.json hold:/data/server-config.json
+    docker cp /vagrant/files/signer-config.json hold:/data/signer-config.json
 fi
 
 if ! docker volume inspect notary-mysql; then

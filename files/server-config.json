@@ -6,12 +6,12 @@
 	},
 	"trust_service": {
 	  "type": "remote",
-	  "hostname": "notarysigner",
+	  "hostname": "dtr.docker.vm",
 	  "port": "7899",
 	  "tls_ca_file": "/data/ca.pem",
 	  "key_algorithm": "ecdsa",
-	  "tls_client_cert": "/data/key.pem",
-	  "tls_client_key": "/data/cert.pem"
+	  "tls_client_cert": "/data/cert.pem",
+	  "tls_client_key": "/data/key.pem"
 	},
 	"logging": {
 		"level": "debug"
