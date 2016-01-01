@@ -58,6 +58,8 @@ installDocker() {
     yum update -y
     yum-config-manager --add-repo 'https://packages.docker.com/1.9/yum/repo/main/centos/7'
     yum install -y docker-engine
+    mkdir -p /etc/systemd/system/docker.service.d
+    cp /vagrant/files/docker.service /etc/systemd/system/docker.service.d/system-overrides.conf
     systemctl stop firewalld.service
     systemctl disable firewalld.service
     systemctl enable docker.service
