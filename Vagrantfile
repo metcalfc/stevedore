@@ -28,6 +28,10 @@ end
 
 Vagrant.configure("2") do |config|
 
+  config.vm.provider 'virtualbox' do |v|
+      v.linked_clone = true if Vagrant::VERSION =~ /^1.8/
+  end
+
   SPEC['vms'].each do |vm|
 
     labels=''
