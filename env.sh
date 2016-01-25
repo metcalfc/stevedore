@@ -45,3 +45,7 @@ use-ucp () {
     export DOCKER_CERT_PATH=$DIR/ducp
     export DOCKER_TLS_VERIFY=1
 }
+
+bounce-ucp () {
+    vagrant ssh ducp -c "docker restart ucp-controller"
+}
