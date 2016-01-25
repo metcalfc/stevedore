@@ -33,6 +33,6 @@ case "$lsb_dist" in
 esac
 
 
-CLUSTERING_OPTS=" --cluster-advertise eth1:12376 --cluster-store etcd://${CONTROLLER}:12379 --cluster-store-opt kv.cacertfile=/var/lib/docker/discovery_certs/ca.pem --cluster-store-opt kv.certfile=/var/lib/docker/discovery_certs/cert.pem --cluster-store-opt kv.keyfile=/var/lib/docker/discovery_certs/key.pem"
+CLUSTERING_OPTS=" --cluster-advertise eth1:12376 --cluster-store etcd://${CONTROLLER}:12379 --cluster-store-opt kv.cacertfile=/var/lib/docker/ucp_discovery_certs/ca.pem --cluster-store-opt kv.certfile=/var/lib/docker/ucp_discovery_certs/cert.pem --cluster-store-opt kv.keyfile=/var/lib/docker/ucp_discovery_certs/key.pem"
 sed -i -- 's#-H 0.0.0.0:2376#-H 0.0.0.0:2376 '"${CLUSTERING_OPTS}"'#' $DOCKER_CONFIG
 service docker restart
