@@ -35,9 +35,10 @@ docker run --rm \
         -e REGISTRY_USERNAME -e REGISTRY_PASSWORD -e REGISTRY_EMAIL \
         -e UCP_ADMIN_USER=${DUCP_USERNAME} \
         -e UCP_ADMIN_PASSWORD=${DUCP_PASSWORD} \
-        dockerorca/ucp \
+        docker/ucp:0.7.1 \
         install \
         --fresh-install \
+        --debug \
         --san $(hostname -s) \
         --san $(hostname -f) \
         --host-address $(host $(hostname -f) | awk '/has address/ { print $4 ; exit }') \

@@ -35,30 +35,13 @@ FINGERPRINT=$(echo -n | openssl s_client -connect ${DUCP_HOSTNAME}:443 2> /dev/n
 
 echo "FINGERPRINT $FINGERPRINT"
 
-cat <<END
 docker run --rm \
         --name ucp \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -e REGISTRY_USERNAME -e REGISTRY_PASSWORD -e REGISTRY_EMAIL \
         -e UCP_ADMIN_USER=${DUCP_USERNAME} \
         -e UCP_ADMIN_PASSWORD=${DUCP_PASSWORD} \
-        dockerorca/ucp \
-        join \
-        --fresh-install \
-        --url "https://${DUCP_HOSTNAME}" \
-        --fingerprint ${FINGERPRINT} \
-        --san $(hostname -s) \
-        --san $(hostname -f) \
-        --host-address ${IP}
-END
-
-docker run --rm \
-        --name ucp \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        -e REGISTRY_USERNAME -e REGISTRY_PASSWORD -e REGISTRY_EMAIL \
-        -e UCP_ADMIN_USER=${DUCP_USERNAME} \
-        -e UCP_ADMIN_PASSWORD=${DUCP_PASSWORD} \
-        dockerorca/ucp \
+        docker/ucp:0.7.1 \
         join \
         --fresh-install \
         --url "https://${DUCP_HOSTNAME}" \
