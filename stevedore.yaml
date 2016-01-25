@@ -33,20 +33,12 @@ roles:
 vm_defaults: &defaults
   box: 'ubuntu'
   domain: 'docker.vm'
-  memory: 1792
+  memory: 1024
   cpus: 2
   vboxnet: 'vboxnet1'
   roles: [docker, join-ducp]
 
 vms:
-  -
-    <<: *defaults
-    name: dev
-    memory: 1024
-    ip: '192.168.99.220'
-    mac: '0800deadbeef'
-    roles: [docker]
-
   -
     <<: *defaults
     name: dtr
