@@ -36,6 +36,8 @@ if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
 fi
 
 if [[ $(docker ps  | grep 'notary' -c) -ne 3 ]]; then
-    cd /vagrant/files || echo "Couldn't cd to /vagrant/files"
+    cp /vagrant/files/docker-compose.yml /vagrant/src/notary
+    cd /vagrant/src/notary|| echo "Couldn't cd to /vagrant/src/notary"
     docker-compose up -d
+    popd
 fi
