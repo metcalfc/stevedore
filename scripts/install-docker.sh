@@ -1,6 +1,9 @@
 #!/bin/bash
 
 DOCKER_OPTS=''
+DOCKER_VERSION='1.10'
+DOCKER_URL='https://packages.docker.com'
+DOCKER_INSTALL_FILE='install.sh '
 ENGINE_LABELS=()
 
 for i in "$@"
@@ -10,11 +13,37 @@ case $i in
     DOCKER_OPTS="${i#*=}"
     shift
     ;;
+    DOCKER_VERSION=*)
+    DOCKER_VERSION="${i#*=}"
+    shift
+    ;;
+    DOCKER_URL=*)
+    DOCKER_URL="${i#*=}"
+    shift
+    ;;
+    DOCKER_INSTALL_FILE=*)
+    DOCKER_INSTALL_FILE="${i#*=}"
+    shift
+    ;;
     *)
     ENGINE_LABELS+=("$i")
     ;;
 esac
 done
+
+DOCKER_INSTALL_URL=''
+
+echo $DOCKER_URL $DOCKER_VERSION $DOCKER_INSTALL_FILE
+
+if [[ -z $DOCKER_INSTALL_FILE ]]; then
+  echo "Does not have an install file"
+  DOCKER_INSTALL_URL="${DOCKER_URL}"
+else
+  echo "Has an install file"
+  DOCKER_INSTALL_URL="${DOCKER_URL}/${DOCKER_VERSION}/${DOCKER_INSTALL_FILE}"
+fi
+
+echo "HERE: $DOCKER_INSTALL_URL"
 
 command_exists() {
   command -v "$@" > /dev/null 2>&1
@@ -52,12 +81,12 @@ installDocker() {
   case "$lsb_dist" in
   centos|redhat)
 
-    echo "Installing rpm"
-    rpm --import "https://pgp.mit.edu/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e"
+    env | grep DOCKER
+    echo "Installing rpm from ${DOCKER_INSTALL_URL}"
+
     yum install -y yum-utils
     yum update -y
-    yum-config-manager --add-repo 'https://packages.docker.com/1.9/yum/repo/main/centos/7'
-    yum install -y docker-engine
+    curl ${DOCKER_INSTALL_URL}| bash
     mkdir -p /etc/systemd/system/docker.service.d
     cp /vagrant/files/docker.service /etc/systemd/system/docker.service.d/system-overrides.conf
     systemctl stop firewalld.service
@@ -72,12 +101,9 @@ installDocker() {
     apt-get update && apt-get upgrade -y && apt-get autoremove
     apt-get install -y apt-transport-https linux-image-extra-virtual
 
-    echo "Installing deb"
+    echo "Installing deb from ${DOCKER_INSTALL_URL}"
 
-    curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' \
-      | apt-key add --import
-    echo "deb https://packages.docker.com/1.9/apt/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
-    apt-get update && apt-get install -y docker-engine
+    curl ${DOCKER_INSTALL_URL}| bash
     update-rc.d -f docker remove
     update-rc.d docker defaults 90
     ;;

@@ -7,6 +7,10 @@ roles:
     -
       type: shell
       script: 'scripts/install-docker.sh'
+      args:
+        DOCKER_VERSION: '1.10'
+        DOCKER_URL: 'https://packages.docker.com'
+        DOCKER_INSTALL_FILE: 'install.sh'
 
   dtr:
     -
