@@ -28,6 +28,16 @@ make-ucp-bundle () {
     rm -rf "${TMPFILE}" || echo "Couldn't delete ${TMPFILE}"
 }
 
+make-cert-file () {
+    HOSTNAME="${1:-dtr.docker.vm}"
+    CERT_FILE="$HOME/docker/tls/${HOSTNAME}/ca.pem"
+    mkdir -p $(dirname ${CERT_FILE})
+    echo $CERT_FILE
+    security find-certificate -a -p /Library/Keychains/System.keychain > $CERT_FILE
+    security find-certificate -a -p /System/Library/Keychains/SystemRootCertificates.keychain >> $CERT_FILE
+    cat $DIR/etc/ca.pem >> $CERT_FILE
+}
+
 use-dtr () {
     export DOCKER_HOST=tcp://dtr.docker.vm:2376
     export DOCKER_CERT_PATH=$DIR/dtr
