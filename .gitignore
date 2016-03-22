@@ -3,8 +3,10 @@
 .rbenv-gemsets
 .ruby-version
 .dockercfg
+.bundle
 bin
 etc
 ducp
 dtr
 dev
+puppet*
