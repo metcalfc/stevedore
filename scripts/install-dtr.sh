@@ -2,6 +2,7 @@
 
 docker info
 
+# Certs and configuration for notary
 if ! docker volume inspect dtr-certs; then
     docker volume create --name dtr-certs
     docker run --name hold -v dtr-certs:/data tianon/true
@@ -27,6 +28,7 @@ if [[ $(docker ps  | grep 'dockerhubenterprise/admin-server' -c) -ne 1 ]]; then
   mkdir -p /etc/docker/certs.d/$(hostname -f)
   cp /vagrant/etc/ca.pem /etc/docker/certs.d/$(hostname -f)/ca.pem
 
+  # hub.yaml, garant,yaml, storage.yaml
   cp /vagrant/files/* /usr/local/etc/dtr/
 
   cp /vagrant/etc/license.json /usr/local/etc/dtr/license.json
@@ -38,6 +40,5 @@ fi
 if [[ $(docker ps  | grep 'notary' -c) -ne 3 ]]; then
     cp /vagrant/files/docker-compose.yml /vagrant/src/notary
     cd /vagrant/src/notary|| echo "Couldn't cd to /vagrant/src/notary"
-    docker-compose up -d
-    popd
+#    docker-compose up -d
 fi
