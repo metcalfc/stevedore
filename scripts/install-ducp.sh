@@ -2,6 +2,7 @@
 
 DUCP_USERNAME=''
 DUCP_PASSWORD=''
+DUCP_VERSION='1.0.1'
 
 for i in "$@"
 do
@@ -14,17 +15,17 @@ case $i in
     DUCP_PASSWORD="${i#*=}"
     shift
     ;;
+    DUCP_VERSION=*)
+    DUCP_VERSION="${i#*=}"
+    shift
+    ;;
 esac
 done
 
 echo "Leading DUCP"
 
-export REGISTRY_USERNAME=$(cat /vagrant/.dockercfg | /usr/local/bin/jq -r '.["https://index.docker.io/v1/"].auth' | base64 --decode | cut -d: -f1)
-export REGISTRY_PASSWORD=$(cat /vagrant/.dockercfg | /usr/local/bin/jq -r '.["https://index.docker.io/v1/"].auth' | base64 --decode | cut -d: -f2)
-export REGISTRY_EMAIL=$( cat /vagrant/.dockercfg | /usr/local/bin/jq -r '.["https://index.docker.io/v1/"].email')
-
-docker volume create --name ucp-server-certs
-docker run --name hold -v ucp-server-certs:/data tianon/true
+docker volume create --name ucp-controller-server-certs
+docker run --name hold -v ucp-controller-server-certs:/data tianon/true
 docker cp /vagrant/etc/ca.pem hold:/data/ca.pem
 docker cp /vagrant/etc/ssl/certs/$(hostname -f).crt hold:/data/cert.pem
 docker cp /vagrant/etc/ssl/private/$(hostname -f).key hold:/data/key.pem
@@ -32,10 +33,10 @@ docker cp /vagrant/etc/ssl/private/$(hostname -f).key hold:/data/key.pem
 docker run --rm \
         --name ucp \
         -v /var/run/docker.sock:/var/run/docker.sock \
-        -e REGISTRY_USERNAME -e REGISTRY_PASSWORD -e REGISTRY_EMAIL \
+		-v /vagrant/etc/license.lic:/docker_subscription.lic \
         -e UCP_ADMIN_USER=${DUCP_USERNAME} \
         -e UCP_ADMIN_PASSWORD=${DUCP_PASSWORD} \
-        docker/ucp:0.7.1 \
+        docker/ucp:${DUCP_VERSION} \
         install \
         --fresh-install \
         --debug \

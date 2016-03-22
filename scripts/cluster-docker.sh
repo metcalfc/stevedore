@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CONTROLLER=$1
+IP=$2
 
 command_exists() {
   command -v "$@" > /dev/null 2>&1
@@ -32,7 +33,10 @@ case "$lsb_dist" in
     ;;
 esac
 
-
-CLUSTERING_OPTS=" --cluster-advertise eth1:12376 --cluster-store etcd://${CONTROLLER}:12379 --cluster-store-opt kv.cacertfile=/var/lib/docker/ucp_discovery_certs/ca.pem --cluster-store-opt kv.certfile=/var/lib/docker/ucp_discovery_certs/cert.pem --cluster-store-opt kv.keyfile=/var/lib/docker/ucp_discovery_certs/key.pem"
-sed -i -- 's#-H 0.0.0.0:2376#-H 0.0.0.0:2376 '"${CLUSTERING_OPTS}"'#' $DOCKER_CONFIG
-service docker restart
+docker run --rm -it --name ucp \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    docker/ucp:1.0.1 engine-discovery \
+    --controller $CONTROLLER \
+    --host-address $IP \
+    --debug \
+    --update

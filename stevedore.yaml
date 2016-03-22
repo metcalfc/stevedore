@@ -24,6 +24,7 @@ roles:
       args:
         DUCP_USERNAME: 'admin'
         DUCP_PASSWORD: 'orca'
+        DUCP_VERSION: '1.0.1'
 
   join-ducp:
     -
@@ -33,6 +34,7 @@ roles:
         DUCP_HOSTNAME: 'ducp.docker.vm'
         DUCP_USERNAME: 'admin'
         DUCP_PASSWORD: 'orca'
+        DUCP_VERSION: '1.0.1'
 
 vm_defaults: &defaults
   box: 'ubuntu'
