@@ -2,6 +2,11 @@ boxes:
   centos: metcalfc/centos71-4.x
   ubuntu: metcalfc/trusty-4.x
 
+ucp_defaults: &ucp_defaults
+    DUCP_USERNAME: 'admin'
+    DUCP_PASSWORD: 'orca'
+    DUCP_VERSION: '1.0.3'
+
 roles:
   docker:
     -
@@ -22,19 +27,15 @@ roles:
       type: shell
       script: 'scripts/install-ducp.sh'
       args:
-        DUCP_USERNAME: 'admin'
-        DUCP_PASSWORD: 'orca'
-        DUCP_VERSION: '1.0.1'
+          <<: *ucp_defaults
 
   join-ducp:
     -
       type: shell
       script: 'scripts/join-ducp.sh'
       args:
-        DUCP_HOSTNAME: 'ducp.docker.vm'
-        DUCP_USERNAME: 'admin'
-        DUCP_PASSWORD: 'orca'
-        DUCP_VERSION: '1.0.1'
+          <<: *ucp_defaults
+          DUCP_HOSTNAME: 'ducp.docker.vm'
 
 vm_defaults: &defaults
   box: 'ubuntu'
