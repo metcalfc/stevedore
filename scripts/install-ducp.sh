@@ -2,7 +2,7 @@
 
 DUCP_USERNAME=''
 DUCP_PASSWORD=''
-DUCP_VERSION='1.0.1'
+DUCP_VERSION='1.0.3'
 
 for i in "$@"
 do
