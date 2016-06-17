@@ -38,5 +38,5 @@ echo "nameserver $VBOX_HOST_IP" | sudo tee "/etc/resolver/${DNSMASQ_DOMAIN}" > /
 
 # Setup the dnsmasq service and start it at boot time
 sudo cp "${DIR}/../files/homebrew.mxcl.dnsmasq.plist" /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
-sudo dp "${DIR}/../files/dnsmasq.conf" /usr/local/etc/dnsmasq.conf
-sudo launchctl load /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
+sudo cp "${DIR}/../files/dnsmasq.conf" /usr/local/etc/dnsmasq.conf
+sudo brew services start dnsmasq
