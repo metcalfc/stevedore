@@ -3,6 +3,7 @@
 DOCKER_OPTS=''
 DOCKER_VERSION='1.10'
 DOCKER_URL='https://packages.docker.com'
+DOCKER_REPO_STRING=''
 DOCKER_INSTALL_FILE='install.sh '
 ENGINE_LABELS=()
 
@@ -21,6 +22,10 @@ case $i in
     DOCKER_URL="${i#*=}"
     shift
     ;;
+    DOCKER_REPO_STRING=*)
+    DOCKER_REPO_STRING="${i#*=}"
+    shift
+    ;;
     DOCKER_INSTALL_FILE=*)
     DOCKER_INSTALL_FILE="${i#*=}"
     shift
@@ -33,8 +38,6 @@ done
 
 DOCKER_INSTALL_URL=''
 
-echo $DOCKER_URL $DOCKER_VERSION $DOCKER_INSTALL_FILE
-
 if [[ -z $DOCKER_INSTALL_FILE ]]; then
   echo "Does not have an install file"
   DOCKER_INSTALL_URL="${DOCKER_URL}"
@@ -42,8 +45,6 @@ else
   echo "Has an install file"
   DOCKER_INSTALL_URL="${DOCKER_URL}/${DOCKER_VERSION}/${DOCKER_INSTALL_FILE}"
 fi
-
-echo "HERE: $DOCKER_INSTALL_URL"
 
 command_exists() {
   command -v "$@" > /dev/null 2>&1
@@ -78,15 +79,21 @@ fi
 
 installDocker() {
   echo "Checking for a CS Install"
+
+  env | grep DOCKER
+  echo "Installing rpm from ${DOCKER_INSTALL_URL}"
+  echo "repo: ${DOCKER_REPO_STRING}"
+  if [ ! -z ${DOCKER_REPO_STRING} ]; then
+    eval "export ${DOCKER_REPO_STRING}"
+  fi
+
   case "$lsb_dist" in
   centos|redhat)
 
-    env | grep DOCKER
-    echo "Installing rpm from ${DOCKER_INSTALL_URL}"
 
     yum install -y yum-utils
     yum update -y
-    curl ${DOCKER_INSTALL_URL}| bash
+    curl ${DOCKER_INSTALL_URL} | bash
     mkdir -p /etc/systemd/system/docker.service.d
     cp /vagrant/files/docker.service /etc/systemd/system/docker.service.d/system-overrides.conf
     systemctl stop firewalld.service
@@ -101,9 +108,7 @@ installDocker() {
     apt-get update && apt-get upgrade -y && apt-get autoremove
     apt-get install -y apt-transport-https linux-image-extra-virtual
 
-    echo "Installing deb from ${DOCKER_INSTALL_URL}"
-
-    curl ${DOCKER_INSTALL_URL}| bash
+    curl ${DOCKER_INSTALL_URL} | bash
     update-rc.d -f docker remove
     update-rc.d docker defaults 90
     ;;
@@ -184,7 +189,7 @@ installJq () {
 }
 
 installCompose () {
-  $curl "https://github.com/docker/compose/releases/download/1.5.2/docker-compose-`uname -s`-`uname -m`" \
+  $curl "https://github.com/docker/compose/releases/download/1.7.0/docker-compose-`uname -s`-`uname -m`" \
     > /usr/local/bin/docker-compose
   chmod +x /usr/local/bin/docker-compose
 }

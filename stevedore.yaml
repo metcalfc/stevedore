@@ -1,6 +1,6 @@
 boxes:
-  centos: metcalfc/centos71-4.x
-  ubuntu: metcalfc/trusty-4.x
+  centos: metcalfc/centos71
+  ubuntu: metcalfc/trusty
 
 ucp_defaults: &ucp_defaults
     DUCP_USERNAME: 'admin'
@@ -13,9 +13,15 @@ roles:
       type: shell
       script: 'scripts/install-docker.sh'
       args:
-        DOCKER_VERSION: '1.10'
+        DOCKER_VERSION: '1.11'
         DOCKER_URL: 'https://packages.docker.com'
         DOCKER_INSTALL_FILE: 'install.sh'
+        DOCKER_REPO_STRING: ''
+
+  nfs:
+    -
+      type: shell
+      script: 'scripts/install-nfs.sh'
 
   dtr:
     -
@@ -40,32 +46,26 @@ roles:
 vm_defaults: &defaults
   box: 'ubuntu'
   domain: 'docker.vm'
-  memory: 1024
+  memory: 2048
   cpus: 2
   vboxnet: 'vboxnet1'
-  roles: [docker, join-ducp]
+  roles: [docker, nfs]
 
 vms:
   -
     <<: *defaults
-    name: dtr
-    ip: '192.168.99.200'
-    mac: '080027087dfe'
-    roles: [docker, dtr]
-
-  -
-    <<: *defaults
-    name: ducp
+    name: engine01
     ip: '192.168.99.201'
+    cnames: 'ducp,dtr'
     mac: '080027c69bc2'
     labels:
         storage: 'ssd'
         location: 'rack1'
-    roles: [docker, ducp]
   -
     <<: *defaults
-    name: engine01
-    ip: '192.168.99.211'
+    name: engine02
+    ip: '192.168.99.202'
+    cnames: 'voting,results'
     mac: '0800278b3557'
     box: 'centos'
     labels:
@@ -73,16 +73,16 @@ vms:
         location: 'rack1'
   -
     <<: *defaults
-    name: engine02
-    ip: '192.168.99.212'
+    name: engine03
+    ip: '192.168.99.203'
     mac: '080027e79dc9'
     labels:
         storage: 'ssd'
         location: 'rack2'
   -
     <<: *defaults
-    name: engine03
-    ip: '192.168.99.213'
+    name: engine04
+    ip: '192.168.99.204'
     mac: '080027363bd3'
     box: 'centos'
     labels:

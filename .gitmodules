@@ -1,3 +1,0 @@
-[submodule "src/notary"]
-	path = src/notary
-	url = git@github.com:docker/notary.git

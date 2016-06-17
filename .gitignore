@@ -10,3 +10,5 @@ ducp
 dtr
 dev
 puppet*
+nfs
+ca-backup.tar

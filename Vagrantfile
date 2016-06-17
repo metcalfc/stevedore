@@ -8,6 +8,11 @@ def die(msg)
   exit 1
 end
 
+def killVBDHCP(vboxnet)
+  cmd="VBoxManage dhcpserver remove --ifname \"#{vboxnet}\" 2>&1 | grep -v 'DHCP server does not exist'"
+  system(cmd)
+end
+
 SPEC_FILE=ENV['STEVEDORE_FILE'] || File.expand_path(File.dirname(__FILE__)) + '/stevedore.yaml'
 SPEC=YAML::load(File.open(SPEC_FILE))
 
@@ -44,6 +49,10 @@ Vagrant.configure("2") do |config|
       node_config.vm.network "private_network", mac: vm['mac'], type: :dhcp
 
       node_config.vm.provider "virtualbox" do |vb|
+
+        # Kill the DHCP server. Its the walking dead... it will not die and stay dead
+        killVBDHCP (vm['vboxnet'])
+
         vb.customize [
           'modifyvm', :id,
           '--name', vm['name'],

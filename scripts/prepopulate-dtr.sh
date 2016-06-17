@@ -7,7 +7,7 @@ curl -Livk \
      -H 'Content-Type: application/json; charset=UTF-8' \
      -H 'Accept: */*' \
      -H 'X-Requested-With: XMLHttpRequest' \
-     --data-binary '{"method":"managed","managed":{"users":[{"username":"admin","password":"dockerdtr","isNew":true,"isAdmin":true,"isReadWrite":false,"isReadOnly":false,"teamsChanged":true}]}}'
+     --data-binary '{"method":"managed","managed":{"users":[{"username":"admin","password":"orca","isNew":true,"isAdmin":true,"isReadWrite":false,"isReadOnly":false,"teamsChanged":true}]}}'
 
 # Let dtr restart after locking it down
 sleep 20
@@ -18,14 +18,14 @@ create-user() {
 
   # create user and set their password
   curl -Livk -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"type\": \"user\",
       \"name\": \"${USER_NAME}\",
-      \"password\": \"dockerdtr\" }" \
+      \"password\": \"orca\" }" \
     "https://dtr.docker.vm/api/v0/accounts"
 
   curl -Livk -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr "https://dtr.docker.vm/api/v0/accounts/${USER_NAME}/activate"
+    --user admin:orca "https://dtr.docker.vm/api/v0/accounts/${USER_NAME}/activate"
 }
 
 create-user chad
@@ -35,59 +35,59 @@ create-user jack
 create-user jill
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"type\": \"organization\",
       \"name\": \"eng\"}" \
     "https://dtr.docker.vm/api/v0/accounts"
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"type\": \"organization\",
       \"name\": \"infra\"}" \
     "https://dtr.docker.vm/api/v0/accounts"
 
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"type\": \"organization\",
       \"name\": \"qa\"}" \
     "https://dtr.docker.vm/api/v0/accounts"
 
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr  -d "{
+    --user admin:orca  -d "{
       \"name\": \"ducp\",
       \"description\": \"The DUCP team\",
       \"type\": \"managed\"}" \
     "https://dtr.docker.vm/api/v0/accounts/eng/teams"
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr  -d "{
+    --user admin:orca  -d "{
       \"name\": \"dtr\",
       \"description\": \"The DTR team\",
       \"type\": \"managed\"}" \
     "https://dtr.docker.vm/api/v0/accounts/eng/teams"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/chad"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/chad"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/alice"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/alice"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/bob"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/dtr/members/bob"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/chad"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/chad"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/jill"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/jill"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/jack"
+  --user admin:orca  "https://dtr.docker.vm/api/v0/accounts/eng/teams/ducp/members/jack"
 
 curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr -d "{
+  --user admin:orca -d "{
     \"name\": \"alpine\",
     \"shortDescription\": \"\",
     \"longDescription\": \"\",
@@ -95,13 +95,13 @@ curl -X POST --header "Content-Type: application/json" --header "Accept: applica
   "https://dtr.docker.vm/api/v0/repositories/eng"
 
 curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-  --user admin:dockerdtr -d "{
+  --user admin:orca -d "{
     \"accessLevel\": \"read-write\"}" \
   "https://dtr.docker.vm/api/v0/repositories/eng/alpine/teamAccess/dtr"
 
 
   curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"name\": \"ubuntu\",
       \"shortDescription\": \"\",
       \"longDescription\": \"\",
@@ -109,11 +109,11 @@ curl -X PUT --header "Content-Type: application/json" --header "Accept: applicat
     "https://dtr.docker.vm/api/v0/repositories/eng"
 
   curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-    --user admin:dockerdtr -d "{
+    --user admin:orca -d "{
       \"accessLevel\": \"read-write\"}" \
     "https://dtr.docker.vm/api/v0/repositories/eng/ubuntu/teamAccess/dtr"
 
     curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" \
-      --user admin:dockerdtr -d "{
+      --user admin:orca -d "{
         \"accessLevel\": \"read-write\"}" \
       "https://dtr.docker.vm/api/v0/repositories/eng/ubuntu/teamAccess/ducp"
