@@ -3,6 +3,9 @@
 all:  .dockercfg etc
 	@vagrant up
 
+get:
+	@ansible-galaxy install -r ansible/requirements.yml -p ansible/roles
+
 snap:
 	@vagrant snap take
 
