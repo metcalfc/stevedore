@@ -12,3 +12,5 @@ dev
 puppet*
 nfs
 ca-backup.tar
+
+ansible/roles/*
