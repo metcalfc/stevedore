@@ -1,15 +1,20 @@
 .PHONEY: all start stop build snap rollback
 
-all:  .dockercfg etc
+all: help
+
+help:    ## Show this help.#
+	@egrep '^(.+)\:\ ##\ (.+)' ${MAKEFILE_LIST} | column -t -c 2 -s ':#'
+
+start: .dockercfg etc ## start the environment
 	@vagrant up
 
-get:
+get: ## get all dependencies
 	@ansible-galaxy install -r ansible/requirements.yml -p ansible/roles
 
-snap:
+snap: ## snapshot all vms
 	@vagrant snap take
 
-rollback:
+rollback: ## rollback to the previous snapshot
 	@vagrant snap rollback
 
 $(HOME)/.dockercfg:
@@ -25,13 +30,13 @@ etc/:
 	./scripts/etc-setup.sh
 
 # www is opt in i.e., you need to explicitly run make www
-www: etc
+www: etc ## install the root CA on this host
 	sudo security add-trusted-cert -d -r trustRoot -k "/System/Library/Keychains/SystemRootCertificates.keychain" ./etc/ssl/certs/root-ca.crt
 
 #sudo security add-trusted-cert -d -r trustRoot -k "/Library/Keychains/System.keychain" ./etc/ssl/certs/root-ca.crt
 
 # wwwclean is not opt in so you won't forget to clean up if you go nuking keys.
-wwwclean:
+wwwclean: ## remove the root CA from this host
 	sudo security delete-certificate -c "Docker CA" "/System/Library/Keychains/SystemRootCertificates.keychain" -t || true
 
 #sudo security delete-certificate -c "Docker CA" "/Library/Keychains/System.keychain" -t || true
