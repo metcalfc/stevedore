@@ -49,7 +49,7 @@ vm_defaults: &defaults
   memory: 2048
   cpus: 2
   vboxnet: 'vboxnet1'
-  roles: [docker, nfs]
+  roles: [nfs]
 
 vms:
   -
