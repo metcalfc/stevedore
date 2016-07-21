@@ -14,3 +14,4 @@ nfs
 ca-backup.tar
 
 ansible/roles/*
+ansible/site.retry
