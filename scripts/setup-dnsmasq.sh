@@ -34,9 +34,9 @@ VBoxManage dhcpserver remove --ifname "$DNSMASQ_IFACE" 2>&1 | grep -v 'DHCP serv
 VBoxManage hostonlyif ipconfig "$DNSMASQ_IFACE" --ip "$VBOX_HOST_IP" --netmask "$VBOX_NETMASK"
 
 # Setup resolver to use dnsmasq for any *.docker.vm address
+sudo mkdir -p /etc/resolver
 echo "nameserver $VBOX_HOST_IP" | sudo tee "/etc/resolver/${DNSMASQ_DOMAIN}" > /dev/null
 
 # Setup the dnsmasq service and start it at boot time
-sudo cp "${DIR}/../files/homebrew.mxcl.dnsmasq.plist" /Library/LaunchDaemons/homebrew.mxcl.dnsmasq.plist
 sudo cp "${DIR}/../files/dnsmasq.conf" /usr/local/etc/dnsmasq.conf
 sudo brew services start dnsmasq
