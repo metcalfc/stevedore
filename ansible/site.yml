@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  vars:
+    ntp_timezone: UTC
+    ntp_manage_config: true
+    docker_engine_labels:
+      storage: ssd
+      location: rack1
+  roles:
+    - cs_engine

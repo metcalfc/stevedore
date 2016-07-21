@@ -1,0 +1,7 @@
+ - src: https://github.com/geerlingguy/ansible-role-ntp
+   version: 1.1.0
+   name: ntp
+ - src: https://github.com/metcalfc/ansible-docker-cs
+   version: 0.0.1
+   name: cs_engine
+
