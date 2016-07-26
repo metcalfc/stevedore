@@ -43,7 +43,8 @@ Vagrant.configure("2") do |config|
 
     config.vm.define vm['name'] do |node_config|
 
-      node_config.vm.box = SPEC['boxes'][vm['box']]
+      node_config.vm.box     = SPEC['boxes'][vm['box']]['box']
+      node_config.vm.box_url = SPEC['boxes'][vm['box']]['url']
 
       node_config.vm.host_name = vm['name'] + '.' + $domain
       node_config.vm.network "private_network", mac: vm['mac'], type: :dhcp

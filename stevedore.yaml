@@ -1,6 +1,10 @@
 boxes:
-  centos: metcalfc/centos71
-  ubuntu: metcalfc/trusty
+  centos:
+      box: metcalfc/centos71
+      url: https://s3-us-west-2.amazonaws.com/solutions-vagrant/vagrant/json/metcalfc/centos71.json
+  ubuntu:
+      box: metcalfc/trusty
+      url: https://s3-us-west-2.amazonaws.com/solutions-vagrant/vagrant/json/metcalfc/trusty.json
 
 ucp_defaults: &ucp_defaults
     DUCP_USERNAME: 'admin'
